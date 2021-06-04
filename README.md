@@ -4,9 +4,9 @@ This is Pokémon Red and Blue rom hack based on the awesome dissasembly project 
 
 It builds the following ROMs:
 
-- pokered.gbc `sha1: 3a3ab0145027309870e54869f47bece45953ccea`
-- pokeblue.gbc `sha1: 98e9a6f708966c187a98f893d15fe9f31e880f5c`
-- pokeblue_debug.gbc (debug build) `sha1: fa475878aafb5c1e8f3e242affa12e14bc35efdd`
+- pokered.gbc `sha1: ea9bcae617fdf159b045185467ae58b2e4a48b9a`
+- pokeblue.gbc `sha1: d7037c83e1ae5b39bde3c30787637ba1d4c48ce2`
+- pokeblue_debug.gbc (debug build) `sha1: 5b1456177671b79b263c614ea0e7cc9ac542e9c4`
 
 To set up the repository, see [**INSTALL.md**](INSTALL.md).
 

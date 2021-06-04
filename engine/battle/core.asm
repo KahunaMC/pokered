@@ -1666,73 +1666,59 @@ LoadBattleMonFromParty:
 	ret
 
 CopyEnemyParty:
-	; Copy opponents party data
-	ld hl, wEnemyPartyCount ; load enemy mon party start to HL
-	ld bc, ((wEnemyMon2 - wEnemyMon1) * PARTY_LENGTH) + PARTY_LENGTH + 2 ; get full data size
-	ld de, wPartyCount ; Load the start of player party to de
-	call CopyData ; Copy bc bytes from hl to de.
+	; Copy enemy party data.
+	ld hl, wEnemyPartyCount ; Load the start address of enemy party data into HL.
+	ld bc, ((wEnemyMon2 - wEnemyMon1) * PARTY_LENGTH) + PARTY_LENGTH + 2 ; Load size in bytes of the data to be copied to the player into BC.
+	ld de, wPartyCount ; Load the start address of player party into DE.
+	call CopyData ; Copies BC bytes from [HL] to [DE].
 
-	; Starting at wEnemyPartySpecies, loop through all party members
-	; Find their poke name and fill in the enemy nickname table
-	ld hl, PARTY_LENGTH + 1
-	push hl
 
-	; Loops backwards through nicknames, setting the correct one
-.loopFillEnemyNick
-	; Setup counter for this run
-	pop hl
-	dec hl
-	ld a, l ; push the value of the coutner into a (for use in add n times)
-	push hl
+	; Starting at wEnemyPartySpecies + $0006 and working backwards, iterate over each Pokemon in the enemy party.
+	; If there is a valid entry create a nickname for it. 
+	ld de, PARTY_LENGTH + 1 ; Initalizes loop index as $0007 in DE.
 
-	; Get current species from pointer and put it in tempIdNumb
-	; Skip forward in wEnemyPartySpecies "a" times
-	ld bc, $1 ; load 1 into bc, for skipping one byte forward
-	ld hl, wEnemyPartySpecies ; load pointer 
-	call AddNTimes ; add bc to hl a times ; Skip forward in mon species table
+.loopFillPlayerNicknames
+	dec de ; Decrement index for this iteration.
+	push de ; Place index on the stack for future use. 
+	ld hl, wEnemyPartySpecies ; Load the start address of enemy Pokemon species into HL. 
+	ld a, l ; Load the low byte of that address into A to allow for arithmetic. 
+	add e ; Add current loop index to low byte. Due to fixed memory locations this will not cause an overflow issue. 
+	ld l, a ; Load new low byte offset by loop index to L. 
 
-	; hl contains pointer to correct species
-	; get mon name
-	; TODO: Load does not affect flags, how do we check this?
+
+	; HL contains the pointer to enemy Pokemon species.
+	; Make sure it is valid and if so get it's name.
 	ld a, [hl]
-	; if we are a null, skip back to loop
-	xor a, $00
-	jp z, .loopFillEnemyNick
-	; If we are ff, skip back
-	xor a, $ff
-	jp z, .loopFillEnemyNick
+	; If the species value is invalid, skip to the end of the loop
+	cp $00
+	jp z, .loopFillPlayerNicknamesEnd
+	cp $FF
+	jp z, .loopFillPlayerNicknamesEnd
 	
-	; reload a
-	ld a, [hl]
-	ld [wd11e], a
-	; Use tempIdNum to get poke name into wcd6d
-	call GetMonName
+	ld [wd11e], a ; Load enemy Pokemon species value into the memory space used by GetMonName.
+	call GetMonName ; This will store the resulting string at $CD6D for future use.
 
-	; Get destination pointer in nick table
-	pop hl
-	ld a, l
-	push hl
-	ld hl, wPartyMonNicks ; load pointer 
-	call SkipFixedLengthTextEntries ; add bc to hl a times ; Skip forward in mon nicks
+	; Get the destination pointer for player nickname data.
+	; First get the loop index to determine which nickname to read.
+	pop de
+	ld a, e
+	push de
+	ld hl, wPartyMonNicks ; Load the starting addess of player nickname data into HL.
+	call SkipFixedLengthTextEntries ; Increment the adress by the length of a name for the given loop.
 
-	; Fixed pointer should now be in hl
-	; pointer to mon name should be in wcd6d
-	; Set destination de to hl
+	; Destination for player nickname data is in HL, load this into DE for use with CopyData.
 	ld d, h
 	ld e, l
-	ld hl, wcd6d ; load pointer to temp string into hl
-	ld bc, NAME_LENGTH ; load name size into bc
+	ld hl, wcd6d ; Load address of the data output by GetMonData.
+	ld bc, NAME_LENGTH ; Load the size in bytes to BC for use with CopyData.
 	call CopyData
 
-	; Get our counter, check if we hit 0
-	pop hl
-	ld a, l
-	push hl
-	xor a, $00
-	jp nz, .loopFillEnemyNick
-
-	; Cleanup stack and return
-	pop hl
+	; Get loop index and check if there are no more loops to perform.
+.loopFillPlayerNicknamesEnd
+	xor a ; Empty A in case this was reached via jump
+	pop de ; Load loop index into DE and add it to A to determine if it is 0.
+	add e
+	jp nz, .loopFillPlayerNicknames
 	ret
 	
 ; copies from enemy party data to current enemy mon data when sending out a new enemy mon
