@@ -1665,15 +1665,85 @@ LoadBattleMonFromParty:
 	jr nz, .statModLoop
 	ret
 
+CopyEnemyParty:
+	; Copy opponents party data
+	ld hl, wEnemyPartyCount ; load enemy mon party start to HL
+	ld bc, ((wEnemyMon2 - wEnemyMon1) * PARTY_LENGTH) + PARTY_LENGTH + 2 ; get full data size
+	ld de, wPartyCount ; Load the start of player party to de
+	call CopyData ; Copy bc bytes from hl to de.
+
+	; Starting at wEnemyPartySpecies, loop through all party members
+	; Find their poke name and fill in the enemy nickname table
+	ld hl, PARTY_LENGTH + 1
+	push hl
+
+	; Loops backwards through nicknames, setting the correct one
+.loopFillEnemyNick
+	; Setup counter for this run
+	pop hl
+	dec hl
+	ld a, l ; push the value of the coutner into a (for use in add n times)
+	push hl
+
+	; Get current species from pointer and put it in tempIdNumb
+	; Skip forward in wEnemyPartySpecies "a" times
+	ld bc, $1 ; load 1 into bc, for skipping one byte forward
+	ld hl, wEnemyPartySpecies ; load pointer 
+	call AddNTimes ; add bc to hl a times ; Skip forward in mon species table
+
+	; hl contains pointer to correct species
+	; get mon name
+	; TODO: Load does not affect flags, how do we check this?
+	ld a, [hl]
+	; if we are a null, skip back to loop
+	xor a, $00
+	jp z, .loopFillEnemyNick
+	; If we are ff, skip back
+	xor a, $ff
+	jp z, .loopFillEnemyNick
+	
+	; reload a
+	ld a, [hl]
+	ld [wd11e], a
+	; Use tempIdNum to get poke name into wcd6d
+	call GetMonName
+
+	; Get destination pointer in nick table
+	pop hl
+	ld a, l
+	push hl
+	ld hl, wPartyMonNicks ; load pointer 
+	call SkipFixedLengthTextEntries ; add bc to hl a times ; Skip forward in mon nicks
+
+	; Fixed pointer should now be in hl
+	; pointer to mon name should be in wcd6d
+	; Set destination de to hl
+	ld d, h
+	ld e, l
+	ld hl, wcd6d ; load pointer to temp string into hl
+	ld bc, NAME_LENGTH ; load name size into bc
+	call CopyData
+
+	; Get our counter, check if we hit 0
+	pop hl
+	ld a, l
+	push hl
+	xor a, $00
+	jp nz, .loopFillEnemyNick
+
+	; Cleanup stack and return
+	pop hl
+	ret
+	
 ; copies from enemy party data to current enemy mon data when sending out a new enemy mon
 LoadEnemyMonFromParty:
 	ld a, [wWhichPokemon]
-	ld bc, wEnemyMon2 - wEnemyMon1
-	ld hl, wEnemyMons
-	call AddNTimes
+	ld bc, wEnemyMon2 - wEnemyMon1 ; load size of first pokes data into bc
+	ld hl, wEnemyMons ; load the pointer to wEnemyMons into hl, use with CopyData
+	call AddNTimes ; skip "a" pokemon. Increments HL by a (index) * bc (poke size) 
 	ld de, wEnemyMonSpecies
 	ld bc, wEnemyMonDVs - wEnemyMonSpecies
-	call CopyData
+	call CopyData ; Copy bc bytes from hl to de.
 	ld bc, wEnemyMon1DVs - wEnemyMon1OTID
 	add hl, bc
 	ld de, wEnemyMonDVs
@@ -6222,6 +6292,7 @@ LoadEnemyMonData:
 	ld [de], a
 	ld a, [wEnemyMonSpecies2]
 	ld [wd11e], a
+.getEnemyDisplayName	
 	call GetMonName
 	ld hl, wcd6d
 	ld de, wEnemyMonNick
@@ -6767,6 +6838,9 @@ InitBattleCommon:
 	ld [wTrainerClass], a
 	call GetTrainerInformation
 	callfar ReadTrainer
+	ld a, [wIsInBattle]
+	dec a ; is it a trainer battle?
+	call nz, CopyEnemyParty
 	call DoBattleTransitionAndInitBattleVariables
 	call _LoadTrainerPic
 	xor a
