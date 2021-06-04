@@ -12,9 +12,8 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 ## See also
 
-Other dissasembly projects
+Other dissasembly projects by the team that made [pokered](https://github.com/pret/pokered).
 
-- [**Pokémon Red/Blue**][pokered]
 - [**Pokémon Yellow**][pokeyellow]
 - [**Pokémon Gold/Silver**][pokegold]
 - [**Pokémon Crystal**][pokecrystal]
