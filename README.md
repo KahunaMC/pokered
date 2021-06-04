@@ -10,6 +10,10 @@ It builds the following ROMs:
 
 To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
+## Known issues
+- Sometimes trainers have missing PP for their moves when coppied. Notably Brocks Onix has no PP for Bide. This isn't a limitation of the hack, but classic Gen1 jank. Since trainers in Gen1 don't use PP during battle, this was sometimes left out of their data. I am leaving this as is for that authentic Gen1 jank feel. Feel free to fix the data tables for trainers when you compile the ROM.
+- It is very easy to get softlocked while using this hack. It is recommended that you always have a way to get out of areas that require special moves like cut and surf. As an example you need cut to fight Lt. Surge, but you will be walking out with his party of electric Pokémon.
+
 ## See also
 
 Other dissasembly projects by the team that made [pokered](https://github.com/pret/pokered).
