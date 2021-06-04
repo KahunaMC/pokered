@@ -15,11 +15,11 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 - It is very easy to get softlocked while using this hack. It is recommended that you always have a way to get out of areas that require special moves like cut and surf. As an example you need cut to fight Lt. Surge, but you will be walking out with his party of electric Pokémon.
 
 ## Resources
-[GB Assembly Guide](https://eldred.fr/gb-asm-tutorial/index.html) - A great guide on the Gameboy Assembly Lanauge, including a lot of tricks and traps that you can run into
-[Romhacking.net: Pokémon Memory Map](http://datacrystal.romhacking.net/wiki/Pok%C3%A9mon_Red/Blue:RAM_map) - A great resource for knowing which memory addresses point to what in pokemon's ROM
-[Bulbapedia: Gen 1 Pokémon Party Structure](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_(Generation_I)) - A great resource on the structure of the party data in pokemon
-[Sameboy/Debugger](https://sameboy.github.io/debugger/) - Sameboy is a general purpose gameboy emulator that I used for testing. It's debugger were great for looking at the memory of the game while it was running
-[CyberChef](https://gchq.github.io/CyberChef/) - Used to convert GB text into ASCII for debugging. (Convert from hex, Sub 63 decimal)
+- [GB Assembly Guide](https://eldred.fr/gb-asm-tutorial/index.html) - A great guide on the Gameboy Assembly Lanauge, including a lot of tricks and traps that you can run into
+- [Romhacking.net: Pokémon Memory Map](http://datacrystal.romhacking.net/wiki/Pok%C3%A9mon_Red/Blue:RAM_map) - A great resource for knowing which memory addresses point to what in pokemon's ROM
+- [Bulbapedia: Gen 1 Pokémon Party Structure](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_(Generation_I)) - A great resource on the structure of the party data in pokemon
+- [Sameboy/Debugger](https://sameboy.github.io/debugger/) - Sameboy is a general purpose gameboy emulator that I used for testing. It's debugger were great for looking at the memory of the game while it was running
+- [CyberChef](https://gchq.github.io/CyberChef/) - Used to convert GB text into ASCII for debugging. (Convert from hex, Sub 63 decimal)
 
 ## See also
 
