@@ -16,6 +16,7 @@ To set up the repository, see [**INSTALL.md**](INSTALL.md).
 
 ## Resources
 - [GB Assembly Guide](https://eldred.fr/gb-asm-tutorial/index.html) - A great guide on the Gameboy Assembly Lanauge, including a lot of tricks and traps that you can run into
+- [Another GB Programming Guide](https://fms.komkon.org/GameBoy/Tech/Software.html) - A similar resource to the last one. 
 - [Romhacking.net: Pokémon Memory Map](http://datacrystal.romhacking.net/wiki/Pok%C3%A9mon_Red/Blue:RAM_map) - A great resource for knowing which memory addresses point to what in pokemon's ROM
 - [Bulbapedia: Gen 1 Pokémon Party Structure](https://bulbapedia.bulbagarden.net/wiki/Pok%C3%A9mon_data_structure_(Generation_I)) - A great resource on the structure of the party data in pokemon
 - [Sameboy/Debugger](https://sameboy.github.io/debugger/) - Sameboy is a general purpose gameboy emulator that I used for testing. It's debugger were great for looking at the memory of the game while it was running
