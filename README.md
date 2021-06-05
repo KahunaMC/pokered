@@ -8,7 +8,8 @@ It builds the following ROMs:
 - pokeblue.gbc `sha1: d7037c83e1ae5b39bde3c30787637ba1d4c48ce2`
 - pokeblue_debug.gbc (debug build) `sha1: 5b1456177671b79b263c614ea0e7cc9ac542e9c4`
 
-To set up the repository, see [**INSTALL.md**](INSTALL.md).
+## Creating ROM
+For information on how to compile the code into a working ROM, see [**INSTALL.md**](INSTALL.md).
 
 ## Known issues
 - Sometimes trainers have missing PP for their moves when coppied. Notably Brocks Onix has no PP for Bide. This isn't a limitation of the hack, but classic Gen1 jank. Since trainers in Gen1 don't use PP during battle, this was sometimes left out of their data. I am leaving this as is for that authentic Gen1 jank feel. Feel free to fix the data tables for trainers when you compile the ROM.
