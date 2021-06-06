@@ -8,7 +8,12 @@ It builds the following ROMs:
 - pokeblue.gbc `sha1: d7037c83e1ae5b39bde3c30787637ba1d4c48ce2`
 - pokeblue_debug.gbc (debug build) `sha1: 5b1456177671b79b263c614ea0e7cc9ac542e9c4`
 
-## Creating ROM
+## Patching an existing ROM
+If you already have an existing US red/blue rom backup, you can use a tool like Lunar IPS to apply the patches found in [Releases](https://github.com/KahunaMC/pokered-mirrormatch/releases). There is a good guide on how to patch ROMs on [Pokecommunity.com](https://www.pokecommunity.com/showthread.php?t=333151)
+
+***Disclaimer: These release files are **NOT** red/blue roms, they are simply binary patches of the changes made here. I will **NOT** help you find ROMs. You should use a legally obtained ROM that you dumped from your own cartridge. ***
+
+## Compiling from source
 For information on how to compile the code into a working ROM, see [**INSTALL.md**](INSTALL.md).
 
 ## Known issues
